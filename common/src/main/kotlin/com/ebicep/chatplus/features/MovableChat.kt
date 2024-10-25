@@ -146,9 +146,11 @@ object MovableChat {
                     yDisplacement = mouseY - renderer.getUpdatedY()
                 } else {
                     if (mouseX > renderer.getUpdatedX() + renderer.getUpdatedWidthValue() - RENDER_MOVING_SIZE) {
+                        xDisplacement = renderer.getUpdatedX() + renderer.getUpdatedWidthValue() - mouseX
                         movingChatWidth = true
                     }
                     if (mouseY < renderer.getUpdatedY() - renderer.getTotalLineHeight() + RENDER_MOVING_SIZE) {
+                        yDisplacement = renderer.getUpdatedY() - renderer.getTotalLineHeight() - mouseY
                         movingChatHeight = true
                     }
                 }
@@ -277,7 +279,7 @@ object MovableChat {
             val mouseY = it.mouseY.toDouble()
             if (movingChatWidth) {
                 val newWidth: Double = Mth.clamp(
-                    mouseX - renderer.getUpdatedX(),
+                    (mouseX + xDisplacement) - renderer.getUpdatedX(),
                     MIN_WIDTH.toDouble(),
                     Minecraft.getInstance().window.guiScaledWidth - renderer.getUpdatedX().toDouble()
                 )
@@ -286,7 +288,7 @@ object MovableChat {
             }
             if (movingChatHeight) {
                 val newHeight: Double = Mth.clamp(
-                    renderer.getUpdatedY() - mouseY,
+                    renderer.getUpdatedY() - (mouseY + yDisplacement),
                     renderer.getMinHeight().toDouble(),
                     renderer.getMaxHeightScaled(HeightType.RAW).toDouble()
                 )
