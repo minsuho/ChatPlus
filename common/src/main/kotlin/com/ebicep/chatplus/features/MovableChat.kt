@@ -201,16 +201,15 @@ object MovableChat {
                     renderer.internalY.toFloat(),
                     chatWindow.generalSettings.getUpdatedBackgroundColor()
                 )
-                if (it.chatWindow == ChatManager.selectedWindow) {
-                    renderMoving(
-                        guiGraphics.pose(),
-                        guiGraphics,
-                        renderer.internalX,
-                        renderer.internalY,
-                        renderer.getTotalLineHeight().roundToInt(),
-                        renderer.internalWidth
-                    )
-                }
+                renderMoving(
+                    guiGraphics.pose(),
+                    guiGraphics,
+                    renderer.internalX,
+                    renderer.internalY,
+                    renderer.getTotalLineHeight().roundToInt(),
+                    renderer.internalWidth,
+                    it.chatWindow == ChatManager.selectedWindow
+                )
             }
             it.returnFunction = true
         }
@@ -232,20 +231,18 @@ object MovableChat {
                 startY + (renderer.getLinesPerPageScaled() - it.displayMessageIndex) * renderer.lineHeight,
                 chatWindow.generalSettings.getUpdatedBackgroundColor()
             )
-            if (it.chatWindow == ChatManager.selectedWindow) {
-                poseStack.guiForward()
-                poseStack.createPose {
-                    val unscaled = 1 / renderer.scale
-                    poseStack.scale(unscaled, unscaled, 1f)
-                    renderMoving(
-                        poseStack,
-                        guiGraphics,
-                        renderer.internalX,
-                        renderer.internalY,
-                        renderer.getTotalLineHeight().roundToInt(),
-                        renderer.internalWidth
-                    )
-                }
+            poseStack.createPose {
+                val unscaled = 1 / renderer.scale
+                poseStack.scale(unscaled, unscaled, 1f)
+                renderMoving(
+                    poseStack,
+                    guiGraphics,
+                    renderer.internalX,
+                    renderer.internalY,
+                    renderer.getTotalLineHeight().roundToInt(),
+                    renderer.internalWidth,
+                    it.chatWindow == ChatManager.selectedWindow
+                )
             }
         }
         EventBus.register<HoverHighlight.HoverHighlightRenderEvent> {
@@ -575,29 +572,28 @@ object MovableChat {
         x: Int,
         y: Int,
         height: Int,
-        backgroundWidth: Int
+        backgroundWidth: Int,
+        selectedWindow: Boolean
     ) {
         poseStack.createPose {
-            if (movingChatWidth) {
-                poseStack.guiForward()
-                guiGraphics.fill0(
-                    x + backgroundWidth - RENDER_MOVING_SIZE,
-                    y - height.toFloat(),
-                    x + backgroundWidth.toFloat(),
-                    y.toFloat(),
-                    0xFFFFFFFF.toInt()
-                )
-            }
-            if (movingChatHeight) {
-                poseStack.guiForward()
-                guiGraphics.fill0(
-                    x.toFloat(),
-                    y - height.toFloat(),
-                    x + backgroundWidth.toFloat(),
-                    y - height + RENDER_MOVING_SIZE,
-                    0xFFFFFFFF.toInt()
-                )
-            }
+            val movingWidth = movingChatWidth && selectedWindow
+            val movingHeight = movingChatHeight && selectedWindow
+            poseStack.guiForward()
+            guiGraphics.fill0(
+                x + backgroundWidth - RENDER_MOVING_SIZE,
+                y - height.toFloat(),
+                x + backgroundWidth.toFloat(),
+                y.toFloat(),
+                if (movingWidth) Config.values.movableChatSelectedColor else Config.values.movableChatColor
+            )
+            poseStack.guiForward(backwards = movingWidth && !movingHeight)
+            guiGraphics.fill0(
+                x.toFloat(),
+                y - height.toFloat(),
+                x + backgroundWidth.toFloat(),
+                y - height + RENDER_MOVING_SIZE,
+                if (movingHeight) Config.values.movableChatSelectedColor else Config.values.movableChatColor
+            )
         }
     }
 

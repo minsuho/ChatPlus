@@ -13,6 +13,7 @@ import net.minecraft.util.FormattedCharSequence
 import org.joml.Matrix4f
 
 object GraphicsUtil {
+
     sealed class GuiForwardType<T>(val amount: Double) {
 
         open fun getAmount(modifier: () -> T): Double {
@@ -44,8 +45,11 @@ object GraphicsUtil {
         data object MovableChatMoving : GuiForwardType<Unit>(40.0)
         data object ScreenshotChatFull : GuiForwardType<Unit>(10.0)
         data object MovableChatDebug : GuiForwardType<Unit>(10.0)
-        data object Default : GuiForwardType<Unit>(5.0)
-
+        data object Default : GuiForwardType<Boolean>(5.0) {
+            override fun getAmount(modifier: () -> Boolean): Double {
+                return if (modifier.invoke()) -amount else amount
+            }
+        }
     }
 
     inline fun PoseStack.createPose(fn: () -> Unit) {
@@ -77,8 +81,12 @@ object GraphicsUtil {
         translate(0.0, 0.0, guiForwardType.getAmount(modifier) / 100)
     }
 
-    fun PoseStack.guiForward(guiForwardType: GuiForwardType<Unit> = GuiForwardType.Default) {
+    fun PoseStack.guiForward(guiForwardType: GuiForwardType<Unit>) {
         translate(0.0, 0.0, guiForwardType.getAmount {} / 100)
+    }
+
+    fun PoseStack.guiForward(guiForwardType: GuiForwardType<Boolean> = GuiForwardType.Default, backwards: Boolean = false) {
+        translate(0.0, 0.0, guiForwardType.getAmount { backwards } / 100)
     }
 
     fun GuiGraphics.fill0(i: Float, j: Float, k: Float, l: Float, n: Int) {

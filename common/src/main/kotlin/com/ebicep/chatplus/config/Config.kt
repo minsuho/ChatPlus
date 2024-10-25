@@ -150,6 +150,8 @@ data class ConfigVariables(
     var movableChatEnabled: Boolean = false,
     var movableChatShowEnabledOnScreen: Boolean = true,
     var movableChatToggleKey: InputConstants.Key = InputConstants.getKey("key.keyboard.right.control"),
+    var movableChatColor: Int = Color(255, 255, 255, 200).rgb,
+    var movableChatSelectedColor: Int = Color(0, 255, 0, 200).rgb,
     // filter highlight
     var filterMessagesEnabled: Boolean = true,
     var filterMessagesLinePriority: Int = 150,
