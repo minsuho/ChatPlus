@@ -6,7 +6,6 @@ import com.ebicep.chatplus.features.internal.MessageFilterFormatted
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import net.minecraft.network.chat.Component
-import net.minecraft.network.chat.contents.LiteralContents
 
 @Serializable
 class AutoTabCreator {
@@ -44,9 +43,6 @@ class AutoTabCreator {
 
     private fun handleNewMessage(component: Component): AutoTabData? {
         if (autoTabOptions.isEmpty()) {
-            return null
-        }
-        if (component.contents !is LiteralContents) {
             return null
         }
         val text = component.string
