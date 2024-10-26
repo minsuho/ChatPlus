@@ -484,7 +484,7 @@ class ChatRenderer {
     }
 
     fun getLinesPerPageScaled(heightType: HeightType = HeightType.ADJUSTED): Int {
-        return (getUpdatedHeight(heightType) / getUpdatedLineHeight().toDouble() / getUpdatedScale()).roundToInt()
+        return (getUpdatedHeight(heightType) / getUpdatedLineHeight().toDouble() / getUpdatedScale()).toInt() + 1
     }
 
     fun getTotalLineHeight(): Float {
