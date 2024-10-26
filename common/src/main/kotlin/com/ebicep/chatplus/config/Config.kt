@@ -147,7 +147,7 @@ data class ConfigVariables(
     var tabNotificationSettings: TabNotificationSettings = TabNotificationSettings(),
     var chatWindows: MutableList<ChatWindow> = mutableListOf(),
     // moving chat
-    var movableChatEnabled: Boolean = false,
+    var movableChatEnabled: Boolean = true,
     var movableChatShowEnabledOnScreen: Boolean = true,
     var movableChatToggleKey: InputConstants.Key = InputConstants.getKey("key.keyboard.right.control"),
     var movableChatColor: Int = Color(255, 255, 255, 200).rgb,
