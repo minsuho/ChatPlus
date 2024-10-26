@@ -17,6 +17,7 @@ import com.ebicep.chatplus.util.GraphicsUtil.translate0
 import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.components.PlayerFaceRenderer
+import net.minecraft.client.multiplayer.PlayerInfo
 import net.minecraft.resources.ResourceLocation
 import java.util.*
 
@@ -37,7 +38,11 @@ object PlayerHeadChatDisplay {
             if (it.minute % 10 == 0L) {
                 val currentTime = System.currentTimeMillis()
                 playerNameUUIDs.entries.removeIf { entry ->
-                    currentTime - entry.value.lastUsed > CACHE_EXPIRATION
+                    val remove = currentTime - entry.value.lastUsed > CACHE_EXPIRATION
+                    if (remove) {
+                        playerHeads.remove(entry.value.uuid)
+                    }
+                    remove
                 }
             }
         }
@@ -55,7 +60,7 @@ object PlayerHeadChatDisplay {
                     it.senderUUID = timedUUID.uuid
                     return@register
                 }
-                val playerInfo = connection.getPlayerInfo(word)
+                val playerInfo: PlayerInfo? = connection.getPlayerInfo(word)
                 if (playerInfo != null) {
                     val uuid = playerInfo.profile.id
                     playerNameUUIDs[word] = TimedUUID(uuid, System.currentTimeMillis())
