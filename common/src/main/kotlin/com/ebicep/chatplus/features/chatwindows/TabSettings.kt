@@ -233,18 +233,18 @@ class TabSettings {
                 ChatTab.PADDING + ChatTab.PADDING / 2,
                 textColor
             )
-            // notification badge
-            if (Config.values.tabNotificationSettings.enabled && !chatTab.read) {
-                val scale = Config.values.tabNotificationSettings.scale
-                poseStack.createPose {
-                    poseStack.guiForward()
-                    poseStack.translate0(
-                        x = chatTab.width - Resources.NOTIFICATION_BADGE.width / 2 * scale,
-                        y = startY - Resources.NOTIFICATION_BADGE.height / 2 * scale
-                    )
-                    poseStack.scale(scale, scale, 1f)
-                    guiGraphics.drawImage(Resources.NOTIFICATION_BADGE)
-                }
+        }
+        // notification badge
+        if (Config.values.tabNotificationSettings.enabled && !chatTab.read) {
+            val scale = Config.values.tabNotificationSettings.scale
+            poseStack.createPose {
+                poseStack.guiForward(GraphicsUtil.GuiForwardType.ChatTabNotificationBadge)
+                poseStack.translate0(
+                    x = chatTab.width - Resources.NOTIFICATION_BADGE.width / 2 * scale,
+                    y = startY - Resources.NOTIFICATION_BADGE.height / 2 * scale
+                )
+                poseStack.scale(scale, scale, 1f)
+                guiGraphics.drawImage(Resources.NOTIFICATION_BADGE)
             }
         }
     }

@@ -29,15 +29,17 @@ object GraphicsUtil {
             }
         }
 
-        data object ChatWindowTab : GuiForwardType<Boolean>(55.0) {
-            override fun getAmount(modifier: () -> Boolean): Double {
-                return if (modifier.invoke()) amount + 10.0 else amount
+        data object ChatTabNotificationBadge : GuiForwardType<Unit>(60.0)
+
+        data object ChatWindowTab : GuiForwardType<Boolean>(50.0) {
+            override fun getAmount(modifier: () -> Boolean): Double { // if global selected tab so renders above other outlines if moved over them
+                return if (modifier.invoke()) amount + 2.0 else amount
             }
         }
 
         data object ChatWindowOutline : GuiForwardType<Boolean>(50.0) {
-            override fun getAmount(modifier: () -> Boolean): Double {
-                return if (modifier.invoke()) amount + 20.0 else amount
+            override fun getAmount(modifier: () -> Boolean): Double { // if global selected tab so renders above other tab text/outline if moved over them
+                return if (modifier.invoke()) amount + 4.0 else amount
             }
         }
 
@@ -45,7 +47,7 @@ object GraphicsUtil {
         data object MovableChatMoving : GuiForwardType<Unit>(40.0)
         data object ScreenshotChatFull : GuiForwardType<Unit>(10.0)
         data object MovableChatDebug : GuiForwardType<Unit>(10.0)
-        data object Default : GuiForwardType<Boolean>(5.0) {
+        data object Default : GuiForwardType<Boolean>(0.5) {
             override fun getAmount(modifier: () -> Boolean): Double {
                 return if (modifier.invoke()) -amount else amount
             }
