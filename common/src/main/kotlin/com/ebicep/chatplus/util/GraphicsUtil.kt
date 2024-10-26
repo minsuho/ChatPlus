@@ -268,15 +268,15 @@ object GraphicsUtil {
     }
 
     fun playerFaceRendererDraw(guiGraphics: GuiGraphics, resourceLocation: ResourceLocation, i: Float, j: Float, k: Float) {
-        this.playerFaceRendererDraw(guiGraphics, resourceLocation, i, j, k, true, false)
+        this.playerFaceRendererDraw(guiGraphics, resourceLocation, i, j, k, renderHat = true, renderUpsideDown = false)
     }
 
-    fun playerFaceRendererDraw(guiGraphics: GuiGraphics, resourceLocation: ResourceLocation, i: Float, j: Float, k: Float, bl: Boolean, bl2: Boolean) {
-        val l = 8 + (if (bl2) 8 else 0)
-        val m = 8 * (if (bl2) -1 else 1)
+    fun playerFaceRendererDraw(guiGraphics: GuiGraphics, resourceLocation: ResourceLocation, i: Float, j: Float, k: Float, renderHat: Boolean, renderUpsideDown: Boolean) {
+        val l = 8 + (if (renderUpsideDown) 8 else 0)
+        val m = 8 * (if (renderUpsideDown) -1 else 1)
         guiGraphics.blit0(resourceLocation, i, j, k, k, 8.0f, l.toFloat(), 8f, m.toFloat(), 64f, 64f)
-        if (bl) {
-            playerFaceRendererDrawHat(guiGraphics, resourceLocation, i, j, k, bl2)
+        if (renderHat) {
+            playerFaceRendererDrawHat(guiGraphics, resourceLocation, i, j, k, renderUpsideDown)
         }
     }
 
