@@ -19,7 +19,7 @@ class AutoTabCreator {
         autoTabOptions.forEach {
             it.updateRegex()
         }
-        EventBus.register<AddNewMessageEvent> {
+        EventBus.register<AddNewMessageEvent>({ -5 }) {
             handleNewMessage(it.rawComponent)?.let { data ->
                 data.chatTab.addNewMessage(it)
                 if (data.autoTabOptions.skipOthersOnCreation) {
