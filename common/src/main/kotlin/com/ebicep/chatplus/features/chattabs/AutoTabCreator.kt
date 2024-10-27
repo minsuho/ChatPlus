@@ -88,6 +88,7 @@ class AutoTabCreator {
             val groupValue = matchResult.groups[i]?.value ?: continue
             output = output.replace("%GROUP_$i%", groupValue)
         }
+        output = output.replace(Regex("%GROUP_*?\\d+%"), "")
         return output
     }
 
